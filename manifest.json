@@ -1,0 +1,34 @@
+{
+  "name": "Copy as plain text",
+  "manifest_version": 3,
+  "description": "",
+  "version": "0.1",
+  "action": {
+    "default_popup": "./popup.html"
+  },
+  "background": {
+    "service_worker": "./dist/background.mjs",
+    "type": "module"
+  },
+  "permissions": [
+    "activeTab",
+    "clipboardWrite",
+    "scripting",
+    "offscreen"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["./dist/last_interaction.js"]
+    }
+  ],
+  "web_accessible_resources": [],
+  "commands": {
+    "copy-as-plain-text": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+C"
+      },
+      "description": "Copy as plain text"
+    }
+  }
+}
