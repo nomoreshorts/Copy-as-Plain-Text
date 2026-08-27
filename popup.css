@@ -1,0 +1,115 @@
+body, input {
+  font-family: "Roboto", Arial, Helvetica, sans-serif;
+}
+input, label {
+  background: #f0f0f0;
+  border: 1px rgba(0, 0, 0, 0.2) solid;
+  cursor: pointer;
+}
+input:hover:not(:disabled),  
+input:not(:disabled) + label:hover {
+  background: #e5e5e5;
+}
+input:checked,
+input:checked + label {
+  background: #2563eb;
+  color: #fff;
+}
+input:checked:hover,
+input:checked:hover + label {
+  background: #1a58e0;
+}
+
+input:disabled, input:disabled + label {
+  cursor: unset;
+  opacity: 0.75;
+}
+
+a {
+  color: #2563eb;
+}
+a:hover {
+  color: #1a58e0;
+}
+
+main {
+  width: 400px;
+}
+main > form {
+  display: flex;
+  flex-direction: column;
+}
+#source-options {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  align-self: flex-end;
+  white-space: nowrap;
+  width: 75%;
+  margin-top: 0.5rem;
+ input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  }
+
+  label:first-of-type {
+    border-top-left-radius: 4px;
+  }
+  label {
+    border-right: unset;
+    border-bottom: unset;
+    padding: 1px 6px;
+    cursor: pointer;
+    user-select: none;
+  }
+  label:last-of-type {
+    border-right: 1px rgba(0, 0, 0, 0.2) solid;
+    border-top-right-radius: 4px;
+  }
+}
+
+#plain-text-representation {
+  border-radius: 4px 0 4px 4px;
+  border: 1px rgba(0, 0, 0, 0.2) solid;
+  width: 99.5% !important;
+  min-height: 1.25rem;
+  field-sizing: content; /* baseline 2026 */
+  resize: none;
+  padding: 0;
+}
+
+#CaPT-btn-container {
+  display: grid;
+  grid-auto-flow: column;
+  width: calc(75% / 2);
+  align-self: center; 
+  margin-top: 0.5rem;
+  input {
+    background: lightcyan;
+    border-radius: 4px;
+  }
+  input:hover {
+    background: #d5f4f4;
+  }
+}
+
+footer {
+  margin: 0.75rem -8px -8px -8px;
+  padding: 8px;
+  background: #e5e5e5;
+  border-top: 1px rgba(0, 0, 0, 0.2) solid;
+}
+footer > ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  > li:not(:last-of-type) {
+    padding-right: 0.5rem;
+    border-right: 1px rgba(0, 0, 0, 0.2) solid;
+    margin-right: 0.5rem;
+  }
+}
