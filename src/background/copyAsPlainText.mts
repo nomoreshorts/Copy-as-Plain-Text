@@ -1,5 +1,5 @@
-import { CaPTQuery, RuntimeMessage } from './types'
-import { injectedFunction } from './injected_script.mjs'
+import { CaPTQuery, RuntimeMessage } from '../types'
+import { injectedFunction } from '../background/injected_script.mjs'
 
 async function createOffscreenCopyDocument() {
   // only 1 offscreen document can exist at once
@@ -13,35 +13,6 @@ async function createOffscreenCopyDocument() {
     justification: "Chrome doesn't support using navigator.clipboard in the service worker, so an offscreen document is required."
   })
 }
-chrome.commands.onCommand.addListener(async command => {
-  switch (command) {
-    case 'copy-as-plain-text': {
-      const selectedText = await getSelectedText()
-      if (selectedText) {
-        console.debug("Got", selectedText)
-        try {
-          // chrome doesn't expose this
-          if (navigator.clipboard) {
-            navigator.clipboard.writeText(selectedText)
-          } else {
-            console.debug("Clipboard API not supported in service worker. Creating offscreen document...")
-            await createOffscreenCopyDocument()
-            const message:RuntimeMessage = {
-              target: "offscreen",
-              type: "copy",
-              info: selectedText
-            }
-            await chrome.runtime.sendMessage(message)
-          }
-
-        } catch (err) {
-          console.error("Failed to copy to clipboard. Error:", err)
-        }
-      }
-      break;
-    }
-  }
-})
 
 async function getSelectedText() {
   // query the currently active tab
@@ -83,4 +54,29 @@ async function getSelectedText() {
   }
 
   return latestQuery?.selectionAsPlainText ?? null
+}
+
+export async function copyAsPlainText() {
+  const selectedText = await getSelectedText()
+  if (selectedText) {
+    console.debug("Got", selectedText)
+    try {
+      // chrome doesn't expose this
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(selectedText)
+      } else {
+        console.debug("Clipboard API not supported in service worker. Creating offscreen document...")
+        await createOffscreenCopyDocument()
+        const message:RuntimeMessage = {
+          target: "offscreen",
+          type: "copy",
+          info: selectedText
+        }
+        await chrome.runtime.sendMessage(message)
+      }
+
+    } catch (err) {
+      console.error("Failed to copy to clipboard. Error:", err)
+    }
+  }
 }
