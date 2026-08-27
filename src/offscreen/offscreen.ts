@@ -1,4 +1,4 @@
-import { RuntimeMessage } from './types'
+import { RuntimeMessage } from '../types'
 chrome.runtime.onMessage.addListener((msg, sender,sendResponse) => {
   const message = msg as RuntimeMessage
   if (message.target !== 'offscreen') {

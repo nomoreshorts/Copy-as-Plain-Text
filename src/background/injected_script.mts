@@ -1,4 +1,4 @@
-import { CaPTWindow } from './types'
+import { CaPTWindow } from '../types'
 
 export function injectedFunction() {
   const captWindow = window as unknown as CaPTWindow

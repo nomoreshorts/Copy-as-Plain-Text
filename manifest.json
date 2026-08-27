@@ -7,7 +7,7 @@
     "default_popup": "./popup.html"
   },
   "background": {
-    "service_worker": "./dist/background.mjs",
+    "service_worker": "./dist/background/background.mjs",
     "type": "module"
   },
   "permissions": [
@@ -19,7 +19,7 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["./dist/last_interaction.js"]
+      "js": ["./dist/content_scripts/last_interaction.js"]
     }
   ],
   "web_accessible_resources": [],
