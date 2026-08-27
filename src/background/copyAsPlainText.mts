@@ -14,17 +14,20 @@ async function createOffscreenCopyDocument() {
   })
 }
 
-async function getSelectedText() {
+/** 
+ * @returns {Promise<string|false|null>} string is the selected message, null is returned if nothing is selected and false is returned if we don't have access to the site.
+ */
+export async function getSelectedText() {
   // query the currently active tab
   const activeTab = (await chrome.tabs.query({active: true, currentWindow: true}))[0]
 
+  // probably devtools url
   if (!activeTab) {
-    console.error("No active tab found.")
-    return null;
+    return false;
   }
   if (!activeTab.id || !activeTab.url) {
     console.error("We don't have permissions on the active tab.")
-    return null;
+    return false;
   }
   
 
@@ -40,7 +43,7 @@ async function getSelectedText() {
     })
   } catch(err) {
     // we can't access chrome:// urls
-    return null;
+    return false;
   }
   let latestQuery:CaPTQuery|null = null
   for (const result of results) {
