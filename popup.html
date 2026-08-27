@@ -1,12 +1,35 @@
 <!DOCTYPE html>
 <head>
-  <title>Template</title>
+  <title>Copy as plain text</title>
   <meta charset="UTF-8">
   <link href="./popup.css" rel="stylesheet">
   <link href="./icons/icon-128.png" rel="icon">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-  <script src="./dist/popup.mjs" type="module"></script>
+  <script src="./dist/popup/popup.js" type="module"></script>
 </head>
-<body></body>
+<body>
+  <main>
+    <form>
+      <div id="source-options">
+        <input type="radio" name="source" value="current-tab" id="current-tab" checked><label for="current-tab">From current Tab</label>
+        <div style="display: none;"></div>
+        <input type="radio" name="source" value="clipboard" id="clipboard"><label for="clipboard">From clipboard</label>
+<!--         <button>From current Tab</button>
+        <button>From clipboard</button> -->
+      </div>
+      <textarea readonly id="plain-text-representation"></textarea>
+      <div id="CaPT-btn-container">
+        <input type="submit" value="Copy as plain text!" id="CaPT-btn">
+      </div>
+    </form>
+  </main>
+  <footer>
+    <ul>
+      <li><a href="settings.html" target="_blank">Settings</a></li>
+      <li><a href="guide.html" target="_blank">Guide</a></li>
+      <li><a href="https://github.com/nomoreshorts/Copy-as-Plain-Text">Github</a></li>
+    </ul>
+  </footer>
+</body>
