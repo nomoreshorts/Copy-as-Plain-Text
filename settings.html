@@ -1,0 +1,49 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="assets/css/settings.css">
+  <script type="module" src="./dist/settings/settings.js"></script>
+  <title>CaPT Settings</title>
+</head>
+<body>
+  <main>
+    <div id="logo">
+      <img src="assets/icons/icon.svg" id="logo-img">
+      <h2>Copy as Plain Text</h2>
+    </div>
+    <div id="title-container" class="grand-info-container">
+      <div></div>
+      <h1>Extension Settings</h1>
+      <div></div>
+    </div>
+    <ul>
+      <li>
+          <label class="settings-item" id="context-menu">
+          Add copy as plain text to context menu
+          <input type="checkbox" class="toggle-setting">
+        </label>
+      </li>
+<!--       <li>
+        <label class="settings-item" id="docs-copying">
+          Custom copy as plain text in Google Docs
+          <input type="checkbox" class="toggle-setting">
+        </label>
+        <ul>
+          <li>
+            <label class="settings-item" id="docs-right-click">
+              Add option to docs right click menu      
+              <input type="checkbox" class="toggle-setting">
+            </label>
+          </li>
+        </ul>
+      </li> -->
+    </ul>
+    <div id="extension-version-container" class="grand-info-container">
+      <div></div>
+      <p id="extension-version"></p>
+      <div></div>
+    </div>
+  </main>
+</body>
+</html>
