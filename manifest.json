@@ -10,6 +10,12 @@
     "service_worker": "./dist/background/background.mjs",
     "type": "module"
   },
+  "icons": {
+    "32": "./assets/icons/icon-32.png",
+    "64": "./assets/icons/icon-64.png",
+    "128": "./assets/icons/icon-128.png",
+    "256": "./assets/icons/icon-256.png"
+  },
   "permissions": [
     "activeTab",
     "clipboardWrite",
