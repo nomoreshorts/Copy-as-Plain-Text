@@ -1,5 +1,10 @@
 import { RuntimeMessage } from '../types'
 
+const versionTxt = document.getElementById('extension-version')
+if (versionTxt) {
+  versionTxt.textContent = `CaPT Version ${chrome.runtime.getVersion()}`
+}
+
 class CopyUI {
   protected currentTabBtn = document.getElementById('current-tab')
   protected clipboardBtn = document.getElementById('clipboard')
