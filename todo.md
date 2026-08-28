@@ -1,6 +1,6 @@
 # TODO:
 
-\[ ] Add an option to the browser context menu
+\[✓] Add an option to the browser context menu
 
 \[✓] Finish the popup menu when the extension icon is pressed
 
