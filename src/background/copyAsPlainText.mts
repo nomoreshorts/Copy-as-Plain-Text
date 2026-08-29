@@ -2,18 +2,24 @@ import { CaPTQuery, RuntimeMessage } from '../types'
 import { injectedFunction } from './injected_script.mjs'
 import { injectedCut } from './injected_cut_selection.mjs'
 
-async function createOffscreenCopyDocument() {
-  // only 1 offscreen document can exist at once
-  if ((await chrome.runtime.getContexts({ contextTypes: ["OFFSCREEN_DOCUMENT"] })).length > 0) {
-    return;
-  }
+class OffscreenCopyDocument {
+  static async create() {
+    // only 1 offscreen document can exist at once
+    if ((await chrome.runtime.getContexts({ contextTypes: ["OFFSCREEN_DOCUMENT"] })).length > 0) {
+      return;
+    }
 
-  return chrome.offscreen.createDocument({
-    url: 'offscreen.html',
-    reasons: ["CLIPBOARD"],
-    justification: "Chrome doesn't support using navigator.clipboard in the service worker, so an offscreen document is required."
-  })
+    return chrome.offscreen.createDocument({
+      url: 'offscreen.html',
+      reasons: ["CLIPBOARD"],
+      justification: "Chrome doesn't support using navigator.clipboard in the service worker, so an offscreen document is required."
+    })
+  }
+  static async close() {
+    return chrome.offscreen.closeDocument();
+  }
 }
+
 
 async function retrieveLatestSelection() {
   // query the currently active tab
@@ -112,13 +118,14 @@ export async function copyAsPlainText(selectedText:string|false|null) {
         navigator.clipboard.writeText(selectedText)
       } else {
         console.debug("Clipboard API not supported in service worker. Creating offscreen document...")
-        await createOffscreenCopyDocument()
+        await OffscreenCopyDocument.create()
         const message:RuntimeMessage = {
           target: "offscreen",
           type: "copy",
           info: selectedText
         }
         await chrome.runtime.sendMessage(message)
+        await OffscreenCopyDocument.close()
       }
 
     } catch (err) {
