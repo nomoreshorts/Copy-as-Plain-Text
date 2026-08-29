@@ -1,10 +1,14 @@
 import { RuntimeMessage } from '../types';
-import { copyAsPlainText, getSelectedText } from './copyAsPlainText.mjs'
+import { copyAsPlainText, getSelectedText, delSelectedText } from './copyAsPlainText.mjs'
 import { setContextMenuBtns } from '../settings/menus.mjs'
 chrome.commands.onCommand.addListener(async command => {
   switch (command) {
     case 'copy-as-plain-text': {
-      await copyAsPlainText()
+      await copyAsPlainText(await getSelectedText())
+      break;
+    }
+    case 'cut-as-plain-text': {
+      await copyAsPlainText(await delSelectedText())
       break;
     }
   }
@@ -22,9 +26,9 @@ chrome.runtime.onMessage.addListener(async (message: RuntimeMessage, sender, res
   }
 })
 
-chrome.contextMenus.onClicked.addListener((info, tab) => {
+chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   if (info.menuItemId === 'copyAsPlainTextContextMenu') {
-    copyAsPlainText()
+    copyAsPlainText(await getSelectedText())
   }
   console.dir(info.selectionText)
 })

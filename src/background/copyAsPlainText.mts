@@ -1,5 +1,6 @@
 import { CaPTQuery, RuntimeMessage } from '../types'
-import { injectedFunction } from '../background/injected_script.mjs'
+import { injectedFunction } from './injected_script.mjs'
+import { injectedCut } from './injected_cut_selection.mjs'
 
 async function createOffscreenCopyDocument() {
   // only 1 offscreen document can exist at once
@@ -14,10 +15,7 @@ async function createOffscreenCopyDocument() {
   })
 }
 
-/** 
- * @returns {Promise<string|false|null>} string is the selected message, null is returned if nothing is selected and false is returned if we don't have access to the site.
- */
-export async function getSelectedText() {
+async function retrieveLatestSelection() {
   // query the currently active tab
   const activeTab = (await chrome.tabs.query({active: true, currentWindow: true}))[0]
 
@@ -45,22 +43,67 @@ export async function getSelectedText() {
     // we can't access chrome:// urls
     return false;
   }
-  let latestQuery:CaPTQuery|null = null
+  let latestQuery:chrome.scripting.InjectionResult<CaPTQuery>|null = null
   for (const result of results) {
     const res = result as unknown as chrome.scripting.InjectionResult<CaPTQuery>
     if (!res.result) {}
     else if (latestQuery === null) {
-      latestQuery = res.result
-    } else if (res.result.lastInteraction > latestQuery.lastInteraction) {
-      latestQuery = res.result
+      latestQuery = res
+    } else if (latestQuery.result && res.result.lastInteraction > latestQuery.result.lastInteraction) {
+      latestQuery = res
     }
   }
 
-  return latestQuery?.selectionAsPlainText ?? null
+  if (latestQuery) {
+    return ({
+      ...latestQuery,
+      tabId: activeTab.id
+    } as chrome.scripting.InjectionResult<CaPTQuery> & {tabId: number})
+  } else {
+    return null;
+  }
+}
+/** 
+ * @returns {Promise<string|false|null>} string is the selected message, null is returned if nothing is selected and false is returned if we don't have access to the site.
+ */
+export async function getSelectedText() {
+  const latestSelection = await retrieveLatestSelection()
+  if (latestSelection === false || latestSelection === null) {
+    return latestSelection;
+  } else {
+    return latestSelection.result?.selectionAsPlainText ?? null;
+  }
 }
 
-export async function copyAsPlainText() {
-  const selectedText = await getSelectedText()
+/** 
+ * @returns {Promise<string|false|null>} string is the selected message, null is returned if nothing is selected and false is returned if we don't have access to the site.
+ * Differs from {@link getSelectedText} because it deletes the selected text after finding it (if possible)
+ */
+export async function delSelectedText() {
+  const latestSelection = await retrieveLatestSelection()
+  if (latestSelection === false || latestSelection === null) {
+    return latestSelection;
+  } else {
+    if (latestSelection.result?.selectionAsPlainText != null
+      && latestSelection.result.selectionAsPlainText != '') {
+      try {
+        await chrome.scripting.executeScript({
+          func: injectedCut,
+          args: [latestSelection.result.selectionAsPlainText],
+          world: "ISOLATED",
+          target: {
+            tabId: latestSelection.tabId,
+            frameIds: [latestSelection.frameId]
+          }
+        })
+      } catch(err) { /* we can't access chrome:// urls */ }
+    }
+
+    return latestSelection.result?.selectionAsPlainText ?? null;
+  }
+}
+
+export async function copyAsPlainText(selectedText:string|false|null) {
   if (selectedText) {
     console.debug("Got", selectedText)
     try {
