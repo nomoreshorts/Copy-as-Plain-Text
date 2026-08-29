@@ -2,7 +2,7 @@
   "name": "Copy as plain text",
   "manifest_version": 3,
   "description": "",
-  "version": "0.2",
+  "version": "0.3",
   "action": {
     "default_popup": "./popup.html"
   },
