@@ -1,6 +1,13 @@
 // savedSelected is so that we don't accidentally delete something else if the user moved off
 export function injectedCut(savedSelected:string) {
-  if (document.activeElement instanceof HTMLInputElement 
+  const selection = getSelection()
+  // document.execCommand handles everything natively (including undo/redo), but is deprecated, so have backup behaviour
+  if (document.execCommand! && document.queryCommandEnabled("delete")) {
+    if (selection?.toString().length != 0) {
+      document.execCommand('delete')
+    }
+
+  } else if (document.activeElement instanceof HTMLInputElement 
     || document.activeElement instanceof HTMLTextAreaElement) {
     const active = document.activeElement
     const start = active.selectionStart
@@ -37,7 +44,7 @@ export function injectedCut(savedSelected:string) {
     return null;
   }
   function handleContentEditable() {
-    const selectionRange = getSelection()?.getRangeAt(0)
+    const selectionRange = selection?.getRangeAt(0)
     if (!selectionRange) {
       return;
     }
@@ -64,7 +71,7 @@ export function injectedCut(savedSelected:string) {
       return;
     }
 
-    if (getSelection()?.toString() === savedSelected) {
+    if (selection?.toString() === savedSelected) {
       selectionRange.deleteContents()
       // handle selectionRange deleteContents not removing the container for the start and end even when they are emptied
 /*       function removeEmptiedContainer(container:Node) {
