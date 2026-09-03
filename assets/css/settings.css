@@ -67,6 +67,7 @@ main {
   height: fit-content;
   grid-template-columns: 1fr max-content;
   gap: 0.5rem;
+  cursor: pointer;
 }
 .settings-item + textarea {
   width: 100% !important;
