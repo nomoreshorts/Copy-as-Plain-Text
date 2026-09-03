@@ -1,4 +1,5 @@
 import { RuntimeMessage } from '../types'
+import { SettingsItem } from '../settings/settings_item.js'
 
 const versionTxt = document.getElementById('extension-version')
 if (versionTxt) {
@@ -84,3 +85,62 @@ class CopyUI {
   }
 }
 new CopyUI()
+
+const alwaysCaPTThisTab = document.getElementById('always-CaPT')
+if (alwaysCaPTThisTab) {
+  const alwayCaPTDefaultState = (await chrome.runtime.sendMessage({
+    target: 'background',
+    type: 'local-CaPT-status',
+    info: ''
+  })) as boolean
+  const alwaysCaPTThisTabSettingItem = new SettingsItem(alwaysCaPTThisTab, {
+    selectedCallback: async () => {
+      const message:RuntimeMessage = {
+        target: 'background',
+        type: 'active-CaPT-enable',
+        info: ''
+      }
+      if (!(await chrome.runtime.sendMessage(message))) {
+        alwaysCaPTThisTabSettingItem.checked = false
+      }
+    },
+    unselectedCallback: async () => {
+      const message:RuntimeMessage = {
+        target: 'background',
+        type: 'active-CaPT-disable',
+        info: ''
+      }
+      if (!(await chrome.runtime.sendMessage(message))) {
+        alwaysCaPTThisTabSettingItem.checked = true
+      }
+    },
+    storageItem: {
+      defaultState: alwayCaPTDefaultState
+    }
+  })
+}
+
+const alwaysCaPTAllTabs = document.getElementById('always-CaPT-all-tabs')
+if (alwaysCaPTAllTabs) {
+  new SettingsItem(alwaysCaPTAllTabs, {
+    selectedCallback: async () => {
+      const message:RuntimeMessage = {
+        target: 'background', 
+        type: 'all-CaPT-enable',
+        info: ''
+      }
+      chrome.runtime.sendMessage(message)
+    },
+    unselectedCallback: async () => {
+      const message:RuntimeMessage = {
+        target: 'background', 
+        type: 'all-CaPT-disable',
+        info: ''
+      }
+      chrome.runtime.sendMessage(message)
+    },
+    storageItem: {
+      defaultState: (await chrome.storage.local.get("alwaysCaPTAllTabs")).alwaysCaPTAllTabs as boolean|undefined ?? false
+    }
+  })
+}

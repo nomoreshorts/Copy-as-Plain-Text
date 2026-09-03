@@ -1,5 +1,6 @@
 export interface CaPTWindow extends Window {
   __lastActive:number
+  __alwaysCaPTActive:Promise<boolean>|boolean|undefined
 }
 
 export type CaPTQuery = {

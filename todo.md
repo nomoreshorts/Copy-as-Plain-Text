@@ -13,3 +13,5 @@
 \[ ] Thanks page and explainer when extension is first installed
 
 \[✓] Options page
+
+\[ ] Always copy as plain text on a specific origin

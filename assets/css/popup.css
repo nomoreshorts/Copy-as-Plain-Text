@@ -101,6 +101,41 @@ main > form {
   }
 }
 
+#always-CaPT-options {
+  padding: 0;
+  margin: 0;
+  margin-top: 0.25rem;
+  list-style-type: none;
+  display: flex;
+  justify-content: center;
+  ul {
+    margin: 0;
+    padding-left: 1.25rem;
+    list-style-type: none;
+  }
+  input, p {
+    margin: 0;
+  }
+  label {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+    cursor: pointer;
+  }
+  label[disabled] {
+    opacity: 0.4;
+    cursor: default;
+  }
+}
+.site-origin {
+  width: 100%;
+  display: block;
+  text-align: center;
+  word-break: break-all;
+}
+
 footer {
   margin: 0.75rem -8px -8px -8px;
   padding: 8px;
