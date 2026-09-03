@@ -18,6 +18,7 @@ main {
   filter: drop-shadow(0 0 1rem white);
   > ul {
     padding: 0;
+    margin-left: 1.25rem;
   }
   ul {
     margin: 0;
