@@ -1,6 +1,7 @@
 import { CaPTQuery, RuntimeMessage } from '../types'
 import { injectedFunction } from './injected_script.mjs'
 import { injectedCut } from './injected_cut_selection.mjs'
+import { getActiveTab } from './utils.mjs'
 
 class OffscreenCopyDocument {
   static async create() {
@@ -23,7 +24,7 @@ class OffscreenCopyDocument {
 
 async function retrieveLatestSelection() {
   // query the currently active tab
-  const activeTab = (await chrome.tabs.query({active: true, currentWindow: true}))[0]
+  const activeTab = await getActiveTab()
 
   // probably devtools url
   if (!activeTab) {
