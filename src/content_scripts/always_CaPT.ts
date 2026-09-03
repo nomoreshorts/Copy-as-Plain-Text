@@ -47,8 +47,7 @@ import { CaPTWindow, RuntimeMessage } from '../types'
         e.preventDefault()
         e.stopImmediatePropagation()
         navigator.clipboard.writeText(selectedAsPlain)
-        /** @todo add backup */
-        document.execCommand('delete')
+        await captWindow.handlers.delete(selectedAsPlain)
       }
     }
   })
