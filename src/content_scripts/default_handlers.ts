@@ -2,7 +2,11 @@ import { CaPTWindow } from "../types";
 
 {
   const CaPTWindow = window as unknown as CaPTWindow
-  CaPTWindow.handlers = CaPTWindow.__defaults = {
+  CaPTWindow.handlers = {
+    selection: () => getSelection()?.toString(),
+    delete: injectedDelete
+  }
+  CaPTWindow.__defaultHandlers = {
     selection: () => getSelection()?.toString(),
     delete: injectedDelete
   }

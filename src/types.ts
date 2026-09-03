@@ -1,10 +1,10 @@
 export interface CaPTWindow extends Window {
   __lastActive:number
   __alwaysCaPTActive:Promise<boolean>|boolean|undefined
-  __defaults: {
+  __defaultHandlers: Readonly<{
     selection: () => string|undefined,
     delete: (savedSelected:string) => void
-  }
+  }>
   handlers: {
     selection: () => Promise<string|undefined>|string|undefined,
     delete: (savedSelected:string) => Promise<void>|void
