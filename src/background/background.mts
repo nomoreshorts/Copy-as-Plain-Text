@@ -25,6 +25,10 @@ chrome.runtime.onMessage.addListener(async (message: RuntimeMessage, sender, res
       res(await getSelectedText())
       break;
     }
+    case 'copy-as-plain-text': {
+      await copyAsPlainText(message.info)
+      break;
+    }
 
     // These assume that we have active tab access
     case 'active-CaPT-enable': {

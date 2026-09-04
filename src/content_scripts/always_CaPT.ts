@@ -29,13 +29,21 @@ import { CaPTWindow, RuntimeMessage } from '../types'
     })
   }
 
+  async function copy(toCopy:string) {
+    const message:RuntimeMessage = {
+      target: 'background',
+      type: 'copy-as-plain-text',
+      info: toCopy
+    }
+    chrome.runtime.sendMessage(message)
+  }
   window.addEventListener('copy', async e => {
     if (await captWindow.__alwaysCaPTActive) {
       const selectedAsPlain = getSelection()?.toString() ?? null
       if (!(selectedAsPlain === null || selectedAsPlain === '')) {
         e.preventDefault()
         e.stopImmediatePropagation()
-        navigator.clipboard.writeText(selectedAsPlain)
+        copy(selectedAsPlain)
         // e.clipboardData?.setData('text/plain', selectedAsPlain) <- doesn't seem to work on Google for whatever reason...
       }
     }
@@ -46,7 +54,7 @@ import { CaPTWindow, RuntimeMessage } from '../types'
       if (!(selectedAsPlain === null || selectedAsPlain === '')) {
         e.preventDefault()
         e.stopImmediatePropagation()
-        navigator.clipboard.writeText(selectedAsPlain)
+        copy(selectedAsPlain)
         await captWindow.handlers.delete(selectedAsPlain)
       }
     }
