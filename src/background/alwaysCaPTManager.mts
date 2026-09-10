@@ -1,9 +1,20 @@
 export class AlwaysCaPTManager {
   private constructor(private readonly alwaysCaPTTabIds:Set<number>, private allTabsCaPTEnabled:boolean) {}
+  protected static savedInstance:typeof this.prototype|Promise<typeof this.prototype>|null = null
   public static async retrieve() {
-    let savedTabIdArray = (await chrome.storage.session.get("alwaysCaPTTabIds")).alwaysCaPTTabIds as number[]|undefined
-      let allTabsCaPTEnabled = (await chrome.storage.local.get("alwaysCaPTAllTabs")).alwaysCaPTAllTabs as boolean|undefined
-    return new this(new Set(savedTabIdArray), allTabsCaPTEnabled ?? false)
+    if (this.savedInstance) {
+      return this.savedInstance
+    }
+    // prevent race
+    this.savedInstance = this.create()
+    return this.create()
+  }
+  protected static async create() {
+    let savedTabIdArray = chrome.storage.session.get("alwaysCaPTTabIds")
+    let allTabsCaPTEnabled = chrome.storage.local.get("alwaysCaPTAllTabs")
+    return this.savedInstance = new this(
+    new Set((await savedTabIdArray).alwaysCaPTTabIds as number[]|undefined), 
+    (await allTabsCaPTEnabled).alwaysCaPTAllTabs as boolean|undefined ?? false)
   }
   private async saveTabIds() {
     await chrome.storage.session.set({
