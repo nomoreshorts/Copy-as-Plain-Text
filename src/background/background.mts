@@ -74,7 +74,7 @@ chrome.runtime.onMessage.addListener(async (message: RuntimeMessage, sender, res
     }
 
     case 'all-CaPT-enable': {
-      (await AlwaysCaPTManager.retrieve()).enableCaPTAllTabs()
+      await (await AlwaysCaPTManager.retrieve()).enableCaPTAllTabs()
       const message:RuntimeMessage = {
         target: 'always_CaPT',
         type: 'on',
@@ -84,7 +84,7 @@ chrome.runtime.onMessage.addListener(async (message: RuntimeMessage, sender, res
       break;
     }
     case 'all-CaPT-disable': {
-      (await AlwaysCaPTManager.retrieve()).disableCaPTAllTabs()
+      await (await AlwaysCaPTManager.retrieve()).disableCaPTAllTabs()
       const message:RuntimeMessage = {
         target: 'always_CaPT',
         type: 'off',
