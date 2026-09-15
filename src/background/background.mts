@@ -134,7 +134,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 
 chrome.runtime.onInstalled.addListener(details => {
   ;(async () => {
-    if ((await chrome.storage.local.get("useContextMenu")).useContextMenu === 'true') {
+    if ((await chrome.storage.local.get("useContextMenu")).useContextMenu as boolean) {
       await setContextMenuBtns()
     }
   })();

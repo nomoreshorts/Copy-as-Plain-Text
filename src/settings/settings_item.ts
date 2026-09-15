@@ -21,7 +21,7 @@ export class SettingsItem {
       if (this.checkbox?.checked) {
         if (options.storageItem?.name) {
           await chrome.storage.local.set({
-            [options.storageItem.name]: "true"
+            [options.storageItem.name]: true
           })
         }
         if (options.selectedCallback) {
@@ -30,7 +30,7 @@ export class SettingsItem {
       } else {
         if (options.storageItem?.name) {
           await chrome.storage.local.set({
-            [options.storageItem.name]: "false"
+            [options.storageItem.name]: false
           })
         }
         if (options.unselectedCallback) {

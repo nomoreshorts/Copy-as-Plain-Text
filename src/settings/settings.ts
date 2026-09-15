@@ -11,7 +11,7 @@ if (permissionReqWarnings) {
   const permissionReqWarningsContainer = new SettingsItem(permissionReqWarnings, {
     storageItem: {
       name: "permissionReqWarnings",
-      defaultState: (await chrome.storage.local.get("permissionReqWarnings")).permissionReqWarnings === 'true'
+      defaultState: (await chrome.storage.local.get("permissionReqWarnings")).permissionReqWarnings as boolean
     }
   })
 }
@@ -20,7 +20,7 @@ if (contextMenuSettingContainer) {
   const contextMenuSettingItem = new SettingsItem(contextMenuSettingContainer, {
     storageItem: {
       name: "useContextMenu",
-      defaultState: (await chrome.storage.local.get("useContextMenu")).useContextMenu === 'true'
+      defaultState: (await chrome.storage.local.get("useContextMenu")).useContextMenu as boolean
     },
     selectedCallback: async () => {
       if (await requestContextMenu()) {

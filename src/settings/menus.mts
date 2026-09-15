@@ -16,7 +16,7 @@ async function contextMenuAllowed() {
 
 export async function setContextMenuBtns() {
   const allowed = contextMenuAllowed()
-  if ((await chrome.storage.local.get("useContextMenu")).useContextMenu === 'true') {
+  if ((await chrome.storage.local.get("useContextMenu")).useContextMenu as boolean) {
     if (!await allowed) {
       console.error("contextMenu permission not granted when useContextMenu is true.")
       return false;
