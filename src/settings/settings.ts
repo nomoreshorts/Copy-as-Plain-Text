@@ -6,6 +6,15 @@ if (versionTxt) {
   versionTxt.textContent = `CaPT Version ${chrome.runtime.getVersion()}`
 }
 
+const permissionReqWarnings = document.getElementById('permission-req-warnings')
+if (permissionReqWarnings) {
+  const permissionReqWarningsContainer = new SettingsItem(permissionReqWarnings, {
+    storageItem: {
+      name: "permissionReqWarnings",
+      defaultState: (await chrome.storage.local.get("permissionReqWarnings")).permissionReqWarnings === 'true'
+    }
+  })
+}
 const contextMenuSettingContainer = document.getElementById('context-menu')
 if (contextMenuSettingContainer) {
   const contextMenuSettingItem = new SettingsItem(contextMenuSettingContainer, {
