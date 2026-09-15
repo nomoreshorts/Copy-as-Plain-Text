@@ -26,16 +26,13 @@ async function retrieveLatestSelection() {
   // query the currently active tab
   const activeTab = await getActiveTab()
 
-  // probably devtools url
-  if (!activeTab) {
-    return false;
-  }
-  if (!activeTab.id || !activeTab.url) {
-    console.error("We don't have permissions on the active tab.")
+
+  if (!activeTab // <- probably devtools url
+    || !activeTab.id 
+    || !activeTab.url) {
     return false;
   }
   
-
   let results
   try {
     results = await chrome.scripting.executeScript({
