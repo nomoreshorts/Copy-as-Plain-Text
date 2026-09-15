@@ -47,7 +47,7 @@ class CopyUI {
 
     const res = await chrome.runtime.sendMessage(getSelectionMsg) as string|null|false
     if (res === false) {
-      this.plainTextRepresentation.placeholder = "Cannot access current URL"
+      this.plainTextRepresentation.placeholder = "Cannot access current origin"
     } else if (res === null || res === '') {
       this.plainTextRepresentation.placeholder = "(No text selected)"
     } else {
